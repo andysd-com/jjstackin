@@ -1,0 +1,336 @@
+
+MASTER BUILD PROMPT — StackRunner (Premium, Polished, Accessible)
+
+Role: You are a senior product engineer, UX designer, and delivery lead. Build StackRunner, a unified gig + secret-shop planner that feels premium, is radically simple to use, and outperforms competitors through assistive intelligence and speed. Deliver Web Demo → MVP → Final with a flawless, cohesive design system and rock-solid engineering.
+
+
+---
+
+0) Product North Star
+
+One-liner: Plan, route, and finish more gigs per hour — beautifully.
+
+Primary outcome: $ earned per route-hour ↑ and time-to-first-task ↓.
+
+Secondary metrics: daily completions, D7/D30 retention, p95 route build time, crash-free sessions.
+
+
+
+---
+
+1) Users & Core Jobs
+
+Field Pro (power user): stacks 10–30 tasks/day, needs fast intake + optimal route.
+
+New Gigger: needs guidance, clear steps, and confidence.
+
+Multi-app Hunter: wants a single wall to organize all platforms.
+
+
+Jobs to be done:
+
+1. Intake tasks (share/clipboard/manual) in seconds.
+
+
+2. See everything on a map + ranked list with smart filters.
+
+
+3. Build a time-window-aware route and execute a Run Sheet offline.
+
+
+4. Track earnings, reimbursements, mileage, export proof.
+
+
+
+
+---
+
+2) Phased Delivery (what to build)
+
+A) Web Demo (teaser)
+
+One-page site with: hero, problem→promise, live interactive demo (fake jobs), features grid, FAQs, CTA.
+
+Demo interactions: drag jobs to run sheet; instant earnings estimate; map pins; playful micro-anims.
+
+No login or backend required.
+
+
+B) MVP (usable today)
+
+Auth, profiles, settings.
+
+Gig Wall: create + import tasks (Android Share Target text; paste/parse; quick add).
+
+Map + Route: MapLibre/Mapbox tiles; OpenRouteService/Mapbox Directions; greedy + 2-opt; live ETA & distance; time windows (soft).
+
+Run Sheet: stop-by-stop checklist, notes, photo capture, offline mode.
+
+Earnings: payouts, reimbursements, miles; CSV export.
+
+Sync: Supabase/Postgres; local cache; conflict-safe.
+
+Notifications: expiring windows; “leave now”.
+
+
+C) Final (v1 polished)
+
+Intelligence v2: learned ranking weights per user; route reheating when delays happen; predicted dwell times.
+
+OCR & Receipts: auto-total; attach to jobs.
+
+Backups/Restore: optional cloud drive; JSON export/import.
+
+PWA offline + optional Flutter shell (Android tablet).
+
+Stripe subscriptions for Pro features; PostHog analytics; Sentry errors; feature flags.
+
+
+
+---
+
+3) Design System & Style (sleek + accessible)
+
+Visual style: Calm, modern, “pro-utility.” White/graphite base with a single accent.
+
+Tokens (example):
+
+Color: --accent:#6C8BFF, --ink:#0F172A, --sub:#64748B, --bg:#FFFFFF, --ok:#16A34A, --warn:#F59E0B.
+
+Type: Inter (or system), 14/16/20/24/32 scale; line-height ≥ 1.4.
+
+Radius: 12; Shadow: subtle 1–2dp; Spacing: 8-point grid.
+
+
+Components: app shell, nav bar, cards, data table, map panel, filter chips, stepper, toasts, modal, photo sheet, upload, skeletons.
+
+Motion: 140–200ms; reduce-motion friendly; map pin pulses for state.
+
+A11y: WCAG 2.1 AA+, 44px targets, keyboardable, ARIA for map/list and stepper, high-contrast mode.
+
+
+
+---
+
+4) Tech Stack (boring, fast, maintainable)
+
+Web: Next.js (App Router, TS), React Query, Tailwind, MapLibre (default) or Mapbox.
+
+API: Next.js Route Handlers (REST or tRPC), Zod validation.
+
+DB: Postgres (Prisma). Supabase for auth/storage if desired.
+
+Routing: OpenRouteService (ORS) or Mapbox Directions + Matrix.
+
+Storage: Supabase/S3 for photos; presigned URLs.
+
+Workers: BullMQ/Cloudflare Queues for routing/ocr/insights.
+
+Infra: Vercel (web), Railway/Fly/Cloud Run (workers), GitHub Actions CI.
+
+Observability: Sentry, PostHog, OpenTelemetry logs/traces.
+
+
+
+---
+
+5) Data Model (initial)
+
+User: id, email, prefs.
+
+Job: id, title, source, payout, reimbursement, address, lat/lng, timeWindow {start,end}, durationMin, status, notes, tags.
+
+RunPlan: id, date, orderedJobIds[], distKm, timeMin.
+
+Receipt: id, jobId, url, total.
+
+EventLog: id, actor, entity, delta, at.
+
+
+ERD + Prisma schema required; include seed data.
+
+
+---
+
+6) Intelligence (be better than competitors)
+
+Ranking v1 (MVP): score = w(payout/hour, proximity, time-window tightness, effort, reliability). Tunable weights; explain score in UI.
+
+Routing: nearest-neighbor + 2-opt; cache distance matrix; reheating when schedule slips.
+
+Prompts/Nudges: “Leave by 2:10pm,” “2 jobs expiring in 45m,” “Add this nearby gig for +$12, +6 min.”
+
+
+v2 (Final): learn per-user weights; predict dwell time from history; suggest late-day reshuffles; highlight “high-ROI clusters.”
+
+
+---
+
+7) Security & Privacy
+
+Auth sessions; scoped API tokens.
+
+Input validation everywhere; rate-limit public endpoints.
+
+Signed uploads; presigned expiry; virus scan hook (optional).
+
+Data export/delete; retention policy; encryption at rest (DB) + transit.
+
+
+
+---
+
+8) Performance Targets
+
+First meaningful paint < 1.5s (Web Demo), bundle < 200KB gz (route pages).
+
+p95 route build < 1.2s for 10–15 stops with cached matrix.
+
+Offline route viewer loads in < 500ms (from IndexedDB).
+
+
+
+---
+
+9) Deliverables (for each phase)
+
+1. Figma: flows, components, tokens, mobile/tablet responsive specs.
+
+
+2. Source code (MIT) with README.md, .env.example, seed script.
+
+
+3. CI/CD: GitHub Actions (lint/test/build/deploy); preview URLs on PRs.
+
+
+4. QA: Playwright E2E (happy paths), unit tests for ranking/route/parse.
+
+
+5. Docs: “First 10 minutes,” environment setup, API contracts, runbook.
+
+
+
+
+---
+
+10) Concrete Build Instructions (what to output)
+
+Web Demo
+
+Next.js + Tailwind + MapLibre demo:
+
+Gig Wall (fake data), filter chips, sparkle micro-anims.
+
+Map with pins and “Add to Run” pill; simple straight-line preview.
+
+Copy: strong hero, before/after problem framing, FAQ, CTA.
+
+
+Provide repo + Vercel deploy steps; Lighthouse ≥ 90.
+
+
+MVP
+
+Auth (email or OAuth), settings (units, default start location).
+
+Intake: Share-text parser, clipboard paste, quick add; geocode via Nominatim/MapTiler; cache results.
+
+Map + List: bidirectional selection, optimistic UI; clustering for 100+ pins.
+
+Route: ORS/Mapbox Directions; time windows (soft), ETA/distance; 2-opt improvement.
+
+Run Sheet: offline PWA; photos (to Storage), notes; “complete → submit.”
+
+Earnings: sums by day/week/source; CSV export.
+
+API contracts with Zod; error envelopes; cursor pagination.
+
+Tests for parser, ranker, optimizer; E2E: intake→route→complete→export.
+
+
+Final
+
+Intelligence v2 (learned weights; dwell prediction; reheats).
+
+OCR for receipts; attach to job; auto-total with human override.
+
+Notifications (FCM/Web Push): expiring windows, departure reminders, “add this nearby.”
+
+PWA polish: installable; background sync; conflict resolution.
+
+Stripe (Pro plan): unlimited jobs, OCR, matrix caching, advanced insights.
+
+Analytics dashboards; SLOs; error budgets; feature flags.
+
+
+
+---
+
+11) Android-First Developer Experience (must provide)
+
+Termux scripts to scaffold, run dev server, and push to GitHub.
+
+One-shot push script (setup_stackrunner.sh) to clone repo, copy from /sdcard/Download/StackRunner, commit, push.
+
+“How to run on Samsung Galaxy Tab SM-T357T” guidance (APK from Flutter shell is optional).
+
+
+
+---
+
+12) Acceptance Checklist
+
+✅ Web Demo deployed to Vercel, Lighthouse ≥ 90, smooth interactions.
+
+✅ MVP: Auth + intake + map/list + route + run sheet + export; E2E pass.
+
+✅ Final: Intelligence v2 + OCR + notifications + PWA offline + Stripe + analytics; Sentry clean; on-call runbook.
+
+✅ Docs/screenshots; tokens and components catalog; CI green on main.
+
+
+
+---
+
+13) Output Format
+
+Produce:
+
+1. Brand+copy kit (tagline, voice, tone, OG image, favicon, logo draft SVG).
+
+
+2. Figma link with component library and responsive breakpoints.
+
+
+3. Repo(s):
+
+stackrunner-web-demo/
+
+stackrunner-mvp/
+
+stackrunner-final/ (or monorepo with apps/{web-demo,mvp,final} and packages/{ui,config})
+
+
+
+4. Exact commands to run locally and on Android (Termux), push to GitHub, and deploy to Vercel.
+
+
+5. .env.example with all keys (MapTiler/ORS/Supabase/Stripe/PostHog/Sentry).
+
+
+6. Test plan and launch checklist.
+
+
+
+
+---
+
+14) Guardrails & Quality Bars
+
+Never scrape or automate 3rd-party apps; user-provided data only (share, clipboard, manual).
+
+Ship small vertical slices weekly; maintain zero P0s; feature-flag risky changes.
+
+Keep hot paths simple; move heavy work to workers; cache aggressively (distance matrices).
+
+Document decisions (ADR) in ≤ 5 bullets each.
