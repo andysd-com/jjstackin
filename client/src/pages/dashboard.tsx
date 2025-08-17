@@ -8,7 +8,7 @@ import JobFilters from "@/components/job-filters";
 import JobCard from "@/components/job-card";
 import MapPanel from "@/components/map-panel";
 import RouteOptimizer from "@/components/route-optimizer";
-import QuickAddModal from "@/components/quick-add-modal";
+import QuickAddModal from "@/components/quick-add-modal.tsx";
 import SmartSuggestions from "@/components/smart-suggestions";
 import { Job } from "@shared/schema";
 import { JobAnalytics } from "@/types";
