@@ -36,6 +36,10 @@ export default function JobFilters({
     { id: "doordash", name: "DoorDash", count: getPlatformCount("doordash") },
     { id: "uber", name: "Uber", count: getPlatformCount("uber") },
     { id: "fieldagent", name: "Field Agent", count: getPlatformCount("fieldagent") },
+    { id: "epms", name: "EPMS", count: getPlatformCount("epms") },
+    { id: "ellis", name: "Ellis", count: getPlatformCount("ellis") },
+    { id: "alt360", name: "Alt360", count: getPlatformCount("alt360") },
+    { id: "prestoshopper", name: "PrestoShopper", count: getPlatformCount("prestoshopper") },
     { id: "gigspot", name: "Gig Spot", count: getPlatformCount("gigspot") },
   ].filter(platform => platform.count > 0 || platform.id === "all");
 

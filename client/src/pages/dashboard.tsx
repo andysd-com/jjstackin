@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Route, Plus, Share, User } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import EarningsOverview from "@/components/earnings-overview";
@@ -89,24 +90,16 @@ export default function Dashboard() {
 
             {/* Quick Actions */}
             <div className="flex items-center space-x-3">
-              <Button
-                variant="outline"
-                size="sm"
-                className="hidden sm:flex"
-                onClick={() => {
-                  // Share Target functionality would be implemented here
-                  if (navigator.share) {
-                    navigator.share({
-                      title: 'StackRunner Job',
-                      text: 'Check out this gig opportunity',
-                      url: window.location.href
-                    });
-                  }
-                }}
-              >
-                <Share className="w-4 h-4 mr-2" />
-                Share Target
-              </Button>
+              <Link href="/integrations">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="hidden sm:flex"
+                >
+                  <Share className="w-4 h-4 mr-2" />
+                  Integrations
+                </Button>
+              </Link>
               
               <Button size="sm" onClick={() => setQuickAddOpen(true)}>
                 <Plus className="w-4 h-4 mr-2" />
@@ -228,22 +221,22 @@ export default function Dashboard() {
         {/* Mobile Navigation */}
         <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2">
           <div className="flex justify-around">
-            <button className="flex flex-col items-center py-2 text-accent">
+            <Link href="/jobs" className="flex flex-col items-center py-2 text-sub hover:text-ink">
               <div className="w-6 h-6 mb-1">📋</div>
-              <span className="text-xs font-medium">Jobs</span>
-            </button>
-            <button className="flex flex-col items-center py-2 text-sub hover:text-ink">
+              <span className="text-xs">Jobs</span>
+            </Link>
+            <Link href="/map" className="flex flex-col items-center py-2 text-sub hover:text-ink">
               <div className="w-6 h-6 mb-1">🗺️</div>
               <span className="text-xs">Map</span>
-            </button>
-            <button className="flex flex-col items-center py-2 text-sub hover:text-ink">
+            </Link>
+            <Link href="/routes" className="flex flex-col items-center py-2 text-sub hover:text-ink">
               <Route className="w-6 h-6 mb-1" />
-              <span className="text-xs">Route</span>
-            </button>
-            <button className="flex flex-col items-center py-2 text-sub hover:text-ink">
+              <span className="text-xs">Routes</span>
+            </Link>
+            <Link href="/earnings" className="flex flex-col items-center py-2 text-sub hover:text-ink">
               <div className="w-6 h-6 mb-1">📊</div>
               <span className="text-xs">Earnings</span>
-            </button>
+            </Link>
           </div>
         </nav>
       </div>
